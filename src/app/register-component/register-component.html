@@ -1,20 +1,55 @@
-<body>
-  <div class="register-container">
-    <h2>Registro</h2>
-    <form>
-      <label for="name">Nome</label>
-      <input type="text" id="name" name="name" placeholder="Digite seu nome">
-
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" placeholder="Digite seu email">
-
-      <label for="password">Senha</label>
-      <input type="password" id="password" name="password" placeholder="Digite sua senha">
-
-      <button type="submit">Cadastrar</button>
-    </form>
-    <div class="footer-text">
-      &copy; 2025 MeuSite
+<div class="register-container">
+  <h2>Registro</h2>
+  <form #registerForm="ngForm" (ngSubmit)="register(registerForm)">
+    
+    <label for="name">Nome</label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      placeholder="Digite seu nome"
+      [(ngModel)]="nome"
+      required
+      #nomeInput="ngModel"
+    >
+    <div *ngIf="nomeInput.invalid && nomeInput.touched">
+      O nome é obrigatório.
     </div>
+
+    <label for="email">Email</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      placeholder="Digite seu email"
+      [(ngModel)]="email"
+      required
+      pattern="^[a-zA-Z0-9._%+-]+@(gmail|hotmail|outlook)\.(com|com\.br)$"
+      #emailInput="ngModel"
+    >
+    <div *ngIf="emailInput.invalid && emailInput.touched">
+      Por favor, digite um email válido!
+    </div>
+
+    <label for="password">Senha</label>
+    <input
+      type="password"
+      id="password"
+      name="password"
+      placeholder="Digite sua senha"
+      [(ngModel)]="senha"
+      required
+      minlength="4"
+      #senhaInput="ngModel"
+    >
+    <div *ngIf="senhaInput.invalid && senhaInput.touched">
+      A senha deve ter pelo menos 4 caracteres.
+    </div>
+
+    <button type="submit" [disabled]="registerForm.invalid">Cadastrar</button>
+  </form>
+
+  <div class="footer-text">
+    &copy; 2025 MeuSite
   </div>
-</body>
+</div>

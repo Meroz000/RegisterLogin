@@ -1,50 +1,57 @@
-import { Injectable } from '@angular/core';
+export interface Usuario {
+  nome: string;
+  email: string;
+  senha: string;
+}
 
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 
-export class LocalStorage {
+export class UserService {
   
-  private storage: Storage;
+  private storageKey = 'usuarios';
+  private currentUserSubject = new BehaviorSubject<Usuario | null>(this.getCurrentUserFromStorage());
 
-  constructor(){
-    this.storage = window.localStorage
+  currentUser$ = this.currentUserSubject.asObservable();
+
+  // Registrar usuário
+  registerUser(user: Usuario): void {
+    const usuarios = this.getUsers();
+    usuarios.push(user);
+    localStorage.setItem(this.storageKey, JSON.stringify(usuarios));
   }
 
-  set(key: string, value: any) {
-
-    if (this.storage){
-      this.storage.setItem(key, JSON.stringify(value));
+  // Login
+  login(email: string, senha: string): boolean {
+    const usuarios = this.getUsers();
+    const user = usuarios.find(u => u.email === email && u.senha === senha);
+    if(user) {
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      this.currentUserSubject.next(user);
       return true;
     }
     return false;
   }
 
-  get(key: string): any {
-
-    if (this.storage) {
-      return JSON.parse(this.storage.getItem(key));
-    }
-    return null;
+  // Logout
+  logout(): void {
+    localStorage.removeItem('currentUser');
+    this.currentUserSubject.next(null);
   }
 
-  remove(key: string): boolean {
-
-    if (this.storage) {
-      this.storage.removeItem(key);
-      return true;
-    }
-    return false;
+  // Lista de usuários
+  getUsers(): Usuario[] {
+    const users = localStorage.getItem(this.storageKey);
+    return users ? JSON.parse(users) : [];
   }
 
-  clear(): boolean {
-
-    if (this.storage) {
-      this.storage.clear();
-      return true;
-    }
-    return false;
+  // Método privado apenas para inicializar currentUser
+  private getCurrentUserFromStorage(): Usuario | null {
+    const user = localStorage.getItem('currentUser');
+    return user ? JSON.parse(user) : null;
   }
-
+  
 }

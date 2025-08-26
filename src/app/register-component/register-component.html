@@ -48,6 +48,10 @@
 
     <button type="submit" [disabled]="registerForm.invalid">Cadastrar</button>
   </form>
+  <br>
+  <a [routerLink]="'/login'">Logar</a>
+
+  <router-outlet></router-outlet>
 
   <div class="footer-text">
     &copy; 2025 MeuSite

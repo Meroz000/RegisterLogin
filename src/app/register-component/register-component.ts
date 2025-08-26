@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule} from '@angular/forms';
 import { UserService } from '../local-storage';
 import { NgForm } from '@angular/forms';
+import { RouterModule, Router } from '@angular/router';
 @Component({
   selector: 'app-register-component',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './register-component.html',
   styleUrl: './register-component.scss'
 })
@@ -14,7 +15,7 @@ export class RegisterComponent {
   email = '';
   senha = '';
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router: Router) {}
 
   register(form: NgForm) {
     if (form.invalid) {
@@ -31,5 +32,6 @@ export class RegisterComponent {
   this.nome = '';
   this.email = '';
   this.senha = '';
+  this.router.navigate(['/']);
   }
 }

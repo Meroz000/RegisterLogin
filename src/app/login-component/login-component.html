@@ -20,9 +20,15 @@
       [(ngModel)]="senha"
       required
     >
-
+    
     <button type="submit">Entrar</button>
+
   </form>
+  <br>
+  <a [routerLink]="'/register'">Registrar</a>
+
+  <router-outlet></router-outlet>
+
   <div class="footer-text">
     &copy; 2025 MeuSite
   </div>

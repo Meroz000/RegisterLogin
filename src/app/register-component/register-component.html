@@ -23,8 +23,8 @@
       name="email"
       placeholder="Digite seu email"
       [(ngModel)]="email"
+      pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
       required
-      pattern="^[a-zA-Z0-9._%+-]+@(gmail|hotmail|outlook)\.(com|com\.br)$"
       #emailInput="ngModel"
     >
     <div *ngIf="emailInput.invalid && emailInput.touched">

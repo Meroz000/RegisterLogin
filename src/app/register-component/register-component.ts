@@ -17,21 +17,27 @@ export class RegisterComponent {
 
   constructor(private userService: UserService, private router: Router) {}
 
-  register(form: NgForm) {
-    if (form.invalid) {
-      alert('Preencha todos os campos corretamente!');
-      return;
-    }
+ register(form: NgForm) {
+  if (form.invalid) {
+    alert('Preencha todos os campos corretamente!');
+    return;
+  }
 
-    this.userService.registerUser({
-      nome: this.nome,
-      email: this.email,
-      senha: this.senha
-    });
-  alert('Usuário registrado!');
+  const sucesso = this.userService.registerUser({
+    nome: this.nome,
+    email: this.email,
+    senha: this.senha
+  });
+
+  if (!sucesso) {
+    alert('Usuário ou email já cadastrado!');
+    return;
+  }
+
+  alert('Usuário registrado com sucesso!');
   this.nome = '';
   this.email = '';
   this.senha = '';
   this.router.navigate(['/']);
-  }
+}
 }

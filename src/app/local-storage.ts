@@ -18,11 +18,29 @@ export class UserService {
   currentUser$ = this.currentUserSubject.asObservable();
 
   // Registrar usuário
-  registerUser(user: Usuario): void {
-    const usuarios = this.getUsers();
-    usuarios.push(user);
-    localStorage.setItem(this.storageKey, JSON.stringify(usuarios));
+  // Registrar usuário
+registerUser(user: Usuario): boolean {
+  const usuarios = this.getUsers();
+
+  // Checar se já existe email OU nome iguais
+  const usuarioExistente = usuarios.find(
+    u => u.email === user.email || u.nome === user.nome
+  );
+
+  if (usuarioExistente) {
+    return false; // Usuário já existe
   }
+
+  usuarios.push(user);
+  localStorage.setItem(this.storageKey, JSON.stringify(usuarios));
+
+  if (user) {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    this.currentUserSubject.next(user);
+  }
+
+  return true; // Usuário registrado com sucesso
+}
 
   // Login
   login(email: string, senha: string): boolean {
